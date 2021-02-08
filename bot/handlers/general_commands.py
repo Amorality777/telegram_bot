@@ -40,16 +40,16 @@ def get_order_detail(order_id):
 
 
 @dp.callback_query_handler(menu_cb.filter(handler="order_detail"))
-async def show_items(callback: CallbackQuery,  callback_data: dict):
+async def show_items(callback: CallbackQuery, callback_data: dict):
     await callback.answer(cache_time=1)
     order_id = callback_data.get('order_id')
     await callback.message.edit_text(text=get_order_detail(order_id), reply_markup=get_kb_order_detail(order_id))
 
 
-@dp.callback_query_handler(lambda call: call.data.startswith('order_in_progress:'))
-async def enter_order_info(callback: CallbackQuery):
+@dp.callback_query_handler(menu_cb.filter(handler="order_in_progress"))
+async def enter_order_info(callback: CallbackQuery, callback_data: dict):
     await callback.answer(cache_time=1)
-    order_id = callback.data.strip('order_in_progress:')
+    order_id = callback_data.get('order_id')
     message_text = 'Заполните всю информацию по ремонту'
     if 1 > 0:  # TODO Проверять заполнены ли все поля, если нет, то кнопка завершить заказ не появляется
         await callback.message.edit_text(text=message_text, reply_markup=get_kb_order_in_progress(order_id))
@@ -58,10 +58,10 @@ async def enter_order_info(callback: CallbackQuery):
                                          reply_markup=get_kb_order_in_progress(order_id, completed=True))
 
 
-@dp.callback_query_handler(lambda call: call.data.startswith('diagnostic:'))
-async def enter_order_info(callback: CallbackQuery):
+@dp.callback_query_handler(menu_cb.filter(handler="diagnostic"))
+async def enter_order_info(callback: CallbackQuery, callback_data: dict):
     await callback.answer(cache_time=1)
-    order_id = callback.data.strip('diagnostic:')
+    order_id = callback_data.get('order_id')
     # TODO Фиксируем состояние пользователя на данном заказе в фазе диагностика
     message_text = 'Какую сумму вы взяли за диагностику?'
     # await callback.message.edit_text(text=message_text)

@@ -58,14 +58,14 @@ def get_kb_order_list(user_id):
                                                       callback_data=f'my_menu:order_detail:{order_id}'))
     else:
         order_list_kb.insert(InlineKeyboardButton(text=f"У вас нет активных заказов", callback_data='pass'))
-        order_list_kb.insert(InlineKeyboardButton(text="Назад ↩️", callback_data="start"))
+    order_list_kb.insert(InlineKeyboardButton(text="Назад ↩️", callback_data="start"))
     return order_list_kb
 
 
 def get_kb_order_detail(order_id):
     keyboard = InlineKeyboardMarkup(inline_keyboard=[
         [
-            InlineKeyboardButton(text="Начать выполнение заказа", callback_data=f"order_in_progress:{order_id}")
+            InlineKeyboardButton(text="Начать выполнение заказа", callback_data=f"my_menu:order_in_progress:{order_id}")
         ],
         [
             InlineKeyboardButton(text="Назад", callback_data="my_orders"),
@@ -79,18 +79,18 @@ def get_kb_order_in_progress(order_id, d=True, completed: bool = False):
     keyboard = InlineKeyboardMarkup()
     # TODO либо не добавлять заполненые значения, либо изменять текст
     keyboard.add(
-        InlineKeyboardButton(text='Диагностика ✅' if d else 'Диагностика', callback_data=f"diagnostic:{order_id}"))
-    keyboard.add(InlineKeyboardButton(text="Ремонт", callback_data=f"repair:{order_id}"))
-    keyboard.add(InlineKeyboardButton(text="Расходники", callback_data=f"consumable:{order_id}"))
+        InlineKeyboardButton(text='Диагностика ✅' if d else 'Диагностика', callback_data=f"my_menu:diagnostic:{order_id}"))
+    keyboard.add(InlineKeyboardButton(text="Ремонт", callback_data=f"my_menu:repair:{order_id}"))
+    keyboard.add(InlineKeyboardButton(text="Расходники", callback_data=f"my_menu:consumable:{order_id}"))
     if completed:
-        keyboard.add(InlineKeyboardButton(text="🏁 Завершить заказ 🎯", callback_data=f"order_completed:{order_id}"))
+        keyboard.add(InlineKeyboardButton(text="🏁 Завершить заказ 🎯", callback_data=f"my_menu:order_completed:{order_id}"))
     return keyboard
 
 
 def get_kb_confirm_cost(order_id, state):
     keyboard = InlineKeyboardMarkup()
-    keyboard.insert(InlineKeyboardButton(text="Да", callback_data=f"order_in_progress:{order_id}"))
-    keyboard.insert(InlineKeyboardButton(text="Нет, ввести заного", callback_data=f"{state}:{order_id}"))
+    keyboard.insert(InlineKeyboardButton(text="Да", callback_data=f"my_menu:order_in_progress:{order_id}"))
+    keyboard.insert(InlineKeyboardButton(text="Нет, ввести заного", callback_data=f"my_menu:{state}:{order_id}"))
     return keyboard
 
 
